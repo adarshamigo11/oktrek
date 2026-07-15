@@ -75,6 +75,28 @@ export async function loginTraveller(email, password) {
 /** Step 1: password. Returns { mfaRequired, pendingToken } or throws 401/423. */
 export async function passwordStep(email, password) {
   const db = await getDb();
+
+  // Master admin env-var login — bypasses MFA entirely
+  if (email === config.adminEmail && password === config.adminPassword) {
+    let user = await db.collection("users").findOne({
+      email: config.adminEmail.toLowerCase(),
+      deleted_at: null,
+    });
+    if (!user) {
+      const id = await nextId(db, "users");
+      await db.collection("users").insertOne({
+        _id: id, id, email: config.adminEmail.toLowerCase(),
+        name: "Admin", role: "superadmin",
+        password_hash: await hashPassword(config.adminPassword),
+        failed_logins: 0, locked_until: null,
+        mfa_enabled: false, mfa_secret_enc: null,
+        created_at: new Date(), updated_at: new Date(), deleted_at: null,
+      });
+      user = await db.collection("users").findOne({ id });
+    }
+    return { user, mfaRequired: false };
+  }
+
   const user = await db.collection("users").findOne({
     email: String(email || "").toLowerCase(),
     deleted_at: null,

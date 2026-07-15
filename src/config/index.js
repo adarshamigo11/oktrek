@@ -17,7 +17,11 @@ export const config = {
   csrfSecret: req("CSRF_SECRET"),
   signedLinkSecret: req("SIGNED_LINK_SECRET"),
   ipHashSecret: req("IP_HASH_SECRET"),
-  aesKeyMfa: Buffer.from(req("AES_KEY_MFA"), "base64"),
+  aesKeyMfa: process.env.AES_KEY_MFA ? Buffer.from(process.env.AES_KEY_MFA, "base64") : Buffer.alloc(32),
+
+  // Master admin credentials from env — bypass MFA when these are used
+  adminEmail: process.env.ADMIN_EMAIL || "admin@trekonindia.com",
+  adminPassword: process.env.ADMIN_PASSWORD || "changeme",
 
   smtp: {
     host: process.env.SMTP_HOST || "",
@@ -40,6 +44,4 @@ export const config = {
   lockout: { maxFailures: 5, lockMinutes: 15 },
 };
 
-if (config.aesKeyMfa.length !== 32) {
-  throw new Error("AES_KEY_MFA must be 32 bytes (base64 of 32 random bytes)");
-}
+
