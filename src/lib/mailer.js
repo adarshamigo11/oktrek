@@ -62,7 +62,7 @@ Your booking reference is ${reference}.
 Our team will contact you within 4 business hours on phone or WhatsApp
 with availability and a quote. No payment is required at this stage.
 
-Trek On India
+oktrek
 `,
   };
 }

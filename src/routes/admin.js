@@ -313,7 +313,7 @@ adminRouter.post("/communications/send", requireRole("ops", "superadmin"), csrfP
     const template = p.reminder_label ? `reminder:${p.reminder_label}` : "admin_message";
     let result;
     if (p.channel === "email") {
-      try { const info = await sendMail({ to: recipient, subject: p.subject || "Trek On India update", text: p.body }); const smtp = await getSmtpSettings(); result = { status: smtp.host ? "sent" : "dev_logged", providerMessageId: info.messageId || null }; await writeEmailLog({ recipient, template, status: result.status, inquiryId: inquiry?.id ?? null, payload: { subject: p.subject || "Trek On India update", body: p.body }, providerMessageId: result.providerMessageId }); }
+      try { const info = await sendMail({ to: recipient, subject: p.subject || "oktrek update", text: p.body }); const smtp = await getSmtpSettings(); result = { status: smtp.host ? "sent" : "dev_logged", providerMessageId: info.messageId || null }; await writeEmailLog({ recipient, template, status: result.status, inquiryId: inquiry?.id ?? null, payload: { subject: p.subject || "oktrek update", body: p.body }, providerMessageId: result.providerMessageId }); }
       catch (err) { await writeEmailLog({ recipient, template, status: "failed", inquiryId: inquiry?.id ?? null, payload: { subject: p.subject, body: p.body }, error: err.message }); throw err; }
     } else if (p.channel === "whatsapp") result = await sendWhatsAppText({ to: recipient, body: p.body, template, inquiryId: inquiry?.id ?? null });
     else if (p.channel === "sms") result = await sendSmsText({ to: recipient, body: p.body, template, inquiryId: inquiry?.id ?? null });

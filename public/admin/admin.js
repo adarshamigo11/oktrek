@@ -141,7 +141,7 @@
 
   function showAuth(id) { for (const v of ["view-login", "view-mfa", "view-enrol"]) $(v)?.classList.toggle("hidden", v !== id); }
   function enterApp(user) { setText("sidebarWho", `${user.name} · ${user.role}`); setText("topbarWho", user.name); showView("dashboard"); }
-  function applyBrand(settings) { document.querySelectorAll("[data-brand-name]").forEach(el => { el.textContent = settings.brand_name || "Trek On India"; }); }
+  function applyBrand(settings) { document.querySelectorAll("[data-brand-name]").forEach(el => { el.textContent = settings.brand_name || "oktrek"; }); }
 
   $("form-login")?.addEventListener("submit", async (e) => {
     e.preventDefault(); setText("login-error", "");
@@ -603,7 +603,7 @@ false && (() => {
   }
 
   function applyBrand(settings) {
-    document.querySelectorAll("[data-brand-name]").forEach((el) => { el.textContent = settings.brand_name || "Trek On India"; });
+    document.querySelectorAll("[data-brand-name]").forEach((el) => { el.textContent = settings.brand_name || "oktrek"; });
   }
 
   /* ---------- login ---------- */

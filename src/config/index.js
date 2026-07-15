@@ -20,7 +20,7 @@ export const config = {
   aesKeyMfa: process.env.AES_KEY_MFA ? Buffer.from(process.env.AES_KEY_MFA, "base64") : Buffer.alloc(32),
 
   // Master admin credentials from env — bypass MFA when these are used
-  adminEmail: process.env.ADMIN_EMAIL || "admin@trekonindia.com",
+  adminEmail: process.env.ADMIN_EMAIL || "admin@oktrek.com",
   adminPassword: process.env.ADMIN_PASSWORD || "changeme",
 
   smtp: {
@@ -28,8 +28,8 @@ export const config = {
     port: Number(process.env.SMTP_PORT || 587),
     user: process.env.SMTP_USER || "",
     pass: process.env.SMTP_PASS || "",
-    from: process.env.MAIL_FROM || "Trek On India <bookings@trekonindia.com>",
-    ops: process.env.MAIL_OPS || "ops@trekonindia.com",
+    from: process.env.MAIL_FROM || "oktrek <bookings@oktrek.com>",
+    ops: process.env.MAIL_OPS || "ops@oktrek.com",
   },
 
   captchaSecret: process.env.CAPTCHA_SECRET || "",

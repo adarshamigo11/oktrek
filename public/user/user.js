@@ -245,7 +245,7 @@ async function loadDeals() {
 async function loadSettings() {
   const settings = await getJson("/api/v1/settings");
   document.querySelectorAll("[data-brand-name]").forEach((el) => {
-    el.textContent = settings.brand_name || "Trek On India";
+    el.textContent = settings.brand_name || "oktrek";
   });
   if (settings.brand_logo_url) {
     brandLogo.src = settings.brand_logo_url;

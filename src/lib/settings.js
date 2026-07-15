@@ -1,7 +1,7 @@
 import { getDb } from "./db.js";
 
 export const DEFAULT_SETTINGS = {
-  brand_name: "Trek On India",
+  brand_name: "oktrek",
   brand_logo_url: "",
   whatsapp_enabled: "0",
   whatsapp_phone_number_id: "",
@@ -12,8 +12,8 @@ export const DEFAULT_SETTINGS = {
   smtp_port: "587",
   smtp_user: "",
   smtp_pass: "",
-  smtp_from: "Trek On India <bookings@trekonindia.com>",
-  smtp_ops: "ops@trekonindia.com",
+  smtp_from: "oktrek <bookings@oktrek.com>",
+  smtp_ops: "ops@oktrek.com",
   smtp_secure: "0",
   sms_enabled: "0",
   sms_provider: "dev",
@@ -47,8 +47,8 @@ export async function getSmtpSettings() {
     port: Number(s.smtp_port) || 587,
     user: s.smtp_user || null,
     pass: s.smtp_pass || null,
-    from: s.smtp_from || "Trek On India <bookings@trekonindia.com>",
-    ops: s.smtp_ops || "ops@trekonindia.com",
+    from: s.smtp_from || "oktrek <bookings@oktrek.com>",
+    ops: s.smtp_ops || "ops@oktrek.com",
     secure: s.smtp_secure === "1",
   };
 }

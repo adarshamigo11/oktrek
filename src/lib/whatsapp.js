@@ -67,7 +67,7 @@ export async function sendWhatsAppText({ to, body, template = "freeform", inquir
 }
 
 export function inquiryCreatedOpsMessage({ reference, tourTitle, name, phone, travellers }) {
-  return `New Trek On India inquiry ${reference}\nTour: ${tourTitle}\nTraveller: ${name}\nPhone: ${phone}\nPax: ${travellers}\nOpen admin dashboard to follow up.`;
+  return `New oktrek inquiry ${reference}\nTour: ${tourTitle}\nTraveller: ${name}\nPhone: ${phone}\nPax: ${travellers}\nOpen admin dashboard to follow up.`;
 }
 
 export function inquiryCreatedCustomerMessage({ reference, tourTitle, brandName }) {

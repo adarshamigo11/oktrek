@@ -167,7 +167,7 @@ export async function beginEnrol(pendingToken) {
   await db.collection("users").updateOne({ id: user.id }, { $set: { mfa_secret_enc: encryptSecret(secret) } });
   return {
     secret,
-    otpauthUrl: authenticator.keyuri(user.email, "TrekOnIndia Admin", secret),
+    otpauthUrl: authenticator.keyuri(user.email, "oktrek Admin", secret),
     confirmToken: signToken({ uid: user.id, purpose: "enrol-confirm" }, config.sessionSecret, PENDING_TTL_MS),
   };
 }

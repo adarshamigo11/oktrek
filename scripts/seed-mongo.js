@@ -45,7 +45,7 @@ async function seed() {
   const adminId = await nextId(db, "users");
   await db.collection("users").insertOne({
     _id: adminId, id: adminId,
-    email: "admin@trekonindia.com", name: "Super Admin", role: "superadmin",
+    email: "admin@oktrek.com", name: "Super Admin", role: "superadmin",
     password_hash: await bcrypt.hash(ADMIN_PASSWORD, 12),
     mfa_secret_enc: encryptSecret(MFA_SECRET), mfa_enabled: true,
     failed_logins: 0, locked_until: null, consent_marketing: false,
@@ -56,7 +56,7 @@ async function seed() {
   const opsId = await nextId(db, "users");
   await db.collection("users").insertOne({
     _id: opsId, id: opsId,
-    email: "ops@trekonindia.com", name: "Operations", role: "ops",
+    email: "ops@oktrek.com", name: "Operations", role: "ops",
     password_hash: await bcrypt.hash("OpsTrek@2026!", 12),
     mfa_secret_enc: null, mfa_enabled: false,
     failed_logins: 0, locked_until: null, consent_marketing: false,
@@ -67,7 +67,7 @@ async function seed() {
   const contentId = await nextId(db, "users");
   await db.collection("users").insertOne({
     _id: contentId, id: contentId,
-    email: "content@trekonindia.com", name: "Content Manager", role: "content",
+    email: "content@oktrek.com", name: "Content Manager", role: "content",
     password_hash: await bcrypt.hash("ContentTrek@2026!", 12),
     mfa_secret_enc: null, mfa_enabled: false,
     failed_logins: 0, locked_until: null, consent_marketing: false,
@@ -106,7 +106,7 @@ async function seed() {
       description_md: t.description_md, itinerary: t.itinerary, inclusions: t.inclusions,
       exclusions: t.exclusions,
       hero_image_path: `/uploads/tours/${t.slug}/hero.webp`,
-      meta_title: t.title + " | Trek On India", meta_description: t.description_md.slice(0, 280),
+      meta_title: t.title + " | oktrek", meta_description: t.description_md.slice(0, 280),
       is_published: true, is_featured: t.featured, created_by: adminId,
       rating_avg: 0, rating_count: 0, images: [], category_ids: t.categories.map(s => catMap[s]),
       faq: null, cancellation_md: null,
@@ -159,7 +159,7 @@ async function seed() {
 
   /* ---- app_settings ---- */
   const settings = [
-    { _id: "brand_name", value: "Trek On India" },
+    { _id: "brand_name", value: "oktrek" },
     { _id: "brand_logo_url", value: "" },
     { _id: "whatsapp_enabled", value: "0" },
     { _id: "whatsapp_phone_number_id", value: "" },
@@ -173,12 +173,12 @@ async function seed() {
 
   console.log("──────────────────────────────────────────────");
   console.log("Seed complete.");
-  console.log("Super Admin login:  admin@trekonindia.com");
+  console.log("Super Admin login:  admin@oktrek.com");
   console.log("Password:           " + ADMIN_PASSWORD);
   console.log("TOTP secret (add to Google Authenticator):");
   console.log("  " + MFA_SECRET);
-  console.log("  otpauth://totp/TrekOnIndia%20Admin:admin%40trekonindia.com?secret=" + MFA_SECRET + "&issuer=TrekOnIndia%20Admin");
-  console.log("Ops login: ops@trekonindia.com / OpsTrek@2026!  (MFA enrol on first login)");
+  console.log("  otpauth://totp/oktrek%20Admin:admin%40oktrek.com?secret=" + MFA_SECRET + "&issuer=oktrek%20Admin");
+  console.log("Ops login: ops@oktrek.com / OpsTrek@2026!  (MFA enrol on first login)");
   console.log("──────────────────────────────────────────────");
 }
 
