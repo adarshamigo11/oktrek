@@ -377,8 +377,9 @@ async function submitInquiry(event) {
     email: form.get("email"),
     phone_e164: form.get("phone_e164"),
     travellers: Number(form.get("travellers")),
-    pickup_city: form.get("pickup_city"),
-    message: form.get("message"),
+    pickup_city: form.get("pickup_city") || undefined,
+    message: form.get("message") || undefined,
+    preferred_date: form.get("preferred_date") || undefined,
     website: form.get("website"),
     consent: { version: "preview-2026-07-09", accepted: form.get("consent") === "on" },
   };
@@ -399,7 +400,10 @@ async function submitInquiry(event) {
       body: JSON.stringify(payload),
     });
     const body = await res.json();
-    if (!res.ok) throw new Error(body.title || body.message || "Inquiry failed");
+    if (!res.ok) {
+      const msg = body.errors?.map(e => `${e.path}: ${e.message}`).join(", ") || body.title || body.message || "Inquiry failed";
+      throw new Error(msg);
+    }
     setStatus(`Inquiry created: ${body.reference}`, "ok");
     window.hcaptcha?.reset?.();
   } catch (err) {

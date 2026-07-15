@@ -18,7 +18,7 @@ export const inquirySchema = z.object({
   preferred_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
   name: z.string().min(2).max(120),
   email: z.string().email().max(255),
-  phone_e164: z.string().regex(/^\+[1-9]\d{7,14}$/, "Phone must be E.164, e.g. +919812345678"),
+  phone_e164: z.string().min(7).max(20),
   travellers: z.coerce.number().int().min(1).max(40),
   pickup_city: z.string().max(80).optional(),
   message: z.string().max(4000).optional(),
@@ -76,7 +76,7 @@ export async function createInquiry(req, rawBody) {
     departureId = dep.id;
   }
   if (!departureId && !body.preferred_date) {
-    throw Object.assign(new Error("Provide a departure_id or a preferred_date"), { status: 422 });
+    // No departure or date selected — still accept the inquiry
   }
 
   const id = await nextId(db, "inquiries");
