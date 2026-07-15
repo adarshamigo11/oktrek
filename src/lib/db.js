@@ -34,7 +34,3 @@ export async function nextId(db, collectionName) {
   );
   return r.seq;
 }
-import knex from "knex";
-import knexConfig from "../../knexfile.js";
-
-export const db = knex(knexConfig);

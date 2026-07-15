@@ -1,4 +1,4 @@
-import { db } from "./db.js";
+import { getDb } from "./db.js";
 import { logger } from "./logger.js";
 import { getSettings } from "./settings.js";
 
@@ -7,7 +7,8 @@ function normalizePhone(phone = "") {
 }
 
 async function writeLog({ recipient, template, status, inquiryId = null, payload = null, error = null, providerMessageId = null }) {
-  await db("notification_log").insert({
+  const db = await getDb();
+  await db.collection("notification_logs").insertOne({
     channel: "whatsapp",
     direction: "outbound",
     recipient,
@@ -17,6 +18,7 @@ async function writeLog({ recipient, template, status, inquiryId = null, payload
     inquiry_id: inquiryId,
     payload_json: payload ? JSON.stringify(payload) : null,
     error: error ? String(error).slice(0, 2000) : null,
+    created_at: new Date(),
   });
 }
 
