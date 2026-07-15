@@ -202,12 +202,12 @@ publicRouter.get("/deals", async (_req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// POST /inquiries — csrf + tight limits (5/hr + 30/day per IP)
+// POST /inquiries — csrf + moderate limits (10/hr + 50/day per IP)
 publicRouter.post(
   "/inquiries",
   csrfProtect,
-  rateLimit({ name: "inq-h", limit: 5, windowSec: 3600 }),
-  rateLimit({ name: "inq-d", limit: 30, windowSec: 86400 }),
+  rateLimit({ name: "inq-h", limit: 10, windowSec: 3600 }),
+  rateLimit({ name: "inq-d", limit: 50, windowSec: 86400 }),
   async (req, res, next) => {
     try {
       const result = await createInquiry(req, req.body ?? {});
