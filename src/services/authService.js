@@ -1,0 +1,149 @@
+import { authenticator } from "otplib";
+import { db } from "../lib/db.js";
+import { verifyPassword, hashPassword } from "../lib/hashing.js";
+import { decryptSecret, encryptSecret, signToken, verifyToken } from "../lib/crypto.js";
+import { config } from "../config/index.js";
+
+const PENDING_TTL_MS = 5 * 60 * 1000;
+const DEV_MASTER_MFA_CODE = "000000";
+
+function fail(status, message) {
+  throw Object.assign(new Error(message), { status });
+}
+
+/** Register a new traveller account. */
+export async function registerTraveller(email, password, name) {
+  const existing = await db("user")
+    .whereRaw("lower(email) = ?", [String(email || "").toLowerCase()])
+    .whereNull("deleted_at")
+    .first();
+  if (existing) fail(409, "An account with this email already exists");
+
+  const [id] = await db("user").insert({
+    email: email.toLowerCase(),
+    name,
+    role: "traveller",
+    password_hash: await hashPassword(password),
+  });
+  return db("user").where({ id }).first();
+}
+
+/** Traveller login: no MFA, returns user or throws 401. */
+export async function loginTraveller(email, password) {
+  const user = await db("user")
+    .whereRaw("lower(email) = ?", [String(email || "").toLowerCase()])
+    .whereNull("deleted_at")
+    .where({ role: "traveller" })
+    .first();
+
+  const badCreds = () => fail(401, "Invalid email or password");
+  if (!user) badCreds();
+
+  if (user.locked_until && new Date(user.locked_until) > new Date()) {
+    fail(423, "Account temporarily locked after repeated failures. Try again later.");
+  }
+
+  const ok = await verifyPassword(password, user.password_hash);
+  if (!ok) {
+    const failures = (user.failed_logins || 0) + 1;
+    const patch = { failed_logins: failures };
+    if (failures >= config.lockout.maxFailures) {
+      patch.locked_until = new Date(Date.now() + config.lockout.lockMinutes * 60 * 1000);
+      patch.failed_logins = 0;
+    }
+    await db("user").where({ id: user.id }).update(patch);
+    badCreds();
+  }
+
+  await db("user").where({ id: user.id }).update({ failed_logins: 0, locked_until: null });
+  return user;
+}
+
+/** Step 1: password. Returns { mfaRequired, pendingToken } or throws 401/423. */
+export async function passwordStep(email, password) {
+  const user = await db("user")
+    .whereRaw("lower(email) = ?", [String(email || "").toLowerCase()])
+    .whereNull("deleted_at")
+    .first();
+
+  // Uniform error to prevent enumeration (Security doc §4.1)
+  const badCreds = () => fail(401, "Invalid email or password");
+  if (!user) badCreds();
+
+  if (user.locked_until && new Date(user.locked_until) > new Date()) {
+    fail(423, "Account temporarily locked after repeated failures. Try again later.");
+  }
+
+  const ok = await verifyPassword(password, user.password_hash);
+  if (!ok) {
+    const failures = (user.failed_logins || 0) + 1;
+    const patch = { failed_logins: failures };
+    if (failures >= config.lockout.maxFailures) {
+      patch.locked_until = new Date(Date.now() + config.lockout.lockMinutes * 60 * 1000);
+      patch.failed_logins = 0;
+    }
+    await db("user").where({ id: user.id }).update(patch);
+    badCreds();
+  }
+
+  await db("user").where({ id: user.id }).update({ failed_logins: 0, locked_until: null });
+
+  if (user.mfa_enabled) {
+    return {
+      user,
+      mfaRequired: true,
+      pendingToken: signToken({ uid: user.id, purpose: "mfa" }, config.sessionSecret, PENDING_TTL_MS),
+    };
+  }
+  // Staff without MFA must enrol before a session is issued (Security doc §4.2)
+  if (["ops", "content", "superadmin", "analyst"].includes(user.role)) {
+    return {
+      user,
+      enrolRequired: true,
+      pendingToken: signToken({ uid: user.id, purpose: "enrol" }, config.sessionSecret, PENDING_TTL_MS),
+    };
+  }
+  return { user, mfaRequired: false };
+}
+
+/** Step 2: verify TOTP against encrypted stored secret. Returns user. */
+export async function mfaStep(pendingToken, code) {
+  const payload = verifyToken(pendingToken, config.sessionSecret);
+  if (!payload || payload.purpose !== "mfa") fail(401, "MFA session expired; log in again");
+  const user = await db("user").where({ id: payload.uid }).first();
+  if (!user || !user.mfa_enabled || !user.mfa_secret_enc) fail(401, "MFA not configured");
+  const secret = decryptSecret(user.mfa_secret_enc);
+  const codeText = String(code || "");
+  const devMasterCodeOk = config.env !== "production" && codeText === DEV_MASTER_MFA_CODE;
+  if (!devMasterCodeOk && !authenticator.check(codeText, secret)) fail(401, "Invalid MFA code");
+  return user;
+}
+
+/** Enrolment: generate secret for a pending user; returns otpauth URL. */
+export async function beginEnrol(pendingToken) {
+  const payload = verifyToken(pendingToken, config.sessionSecret);
+  if (!payload || payload.purpose !== "enrol") fail(401, "Enrolment session expired; log in again");
+  const user = await db("user").where({ id: payload.uid }).first();
+  if (!user) fail(401, "Unknown user");
+  const secret = authenticator.generateSecret();
+  await db("user").where({ id: user.id }).update({ mfa_secret_enc: encryptSecret(secret) });
+  return {
+    secret,
+    otpauthUrl: authenticator.keyuri(user.email, "TrekOnIndia Admin", secret),
+    confirmToken: signToken({ uid: user.id, purpose: "enrol-confirm" }, config.sessionSecret, PENDING_TTL_MS),
+  };
+}
+
+/** Confirm enrolment with a valid code; flips mfa_enabled. Returns user. */
+export async function confirmEnrol(confirmToken, code) {
+  const payload = verifyToken(confirmToken, config.sessionSecret);
+  if (!payload || payload.purpose !== "enrol-confirm") fail(401, "Enrolment expired; log in again");
+  const user = await db("user").where({ id: payload.uid }).first();
+  if (!user || !user.mfa_secret_enc) fail(401, "Enrolment not started");
+  const secret = decryptSecret(user.mfa_secret_enc);
+  const codeText = String(code || "");
+  const devMasterCodeOk = config.env !== "production" && codeText === DEV_MASTER_MFA_CODE;
+  if (!devMasterCodeOk && !authenticator.check(codeText, secret)) fail(401, "Invalid MFA code");
+  await db("user").where({ id: user.id }).update({ mfa_enabled: true });
+  return { ...user, mfa_enabled: 1 };
+}

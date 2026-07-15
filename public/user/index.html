@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Book guided Himalayan journeys with fixed departures, transparent pricing, and an operations team that follows every inquiry from first call to return drop.">
+    <meta property="og:title" content="Trek On India | Traveller Preview">
+    <meta property="og:description" content="Book guided Himalayan journeys with fixed departures, transparent pricing, and an operations team that follows every inquiry from first call to return drop.">
+    <meta property="og:type" content="website">
+    <title>Trek On India | Traveller Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/user/user.css">
+  </head>
+  <body>
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <header class="site-header">
+      <a class="brand" href="/user/" aria-label="Trek On India home">
+        <img id="brandLogo" class="brand-logo" src="/uploads/logos/oktrek-logo.svg" alt="OKTREK logo">
+        <span class="brand-mark hidden">TOI</span>
+        <span data-brand-name>Trek On India</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#tours">Treks</a>
+        <a href="#stats">About</a>
+        <a href="#features">Why Us</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#inquiry">Contact</a>
+        <a href="#my-inquiries" id="nav-my-inquiries" class="hidden">My Inquiries</a>
+      </nav>
+      <div class="auth-header">
+        <button id="btn-auth" class="button small" type="button">Login / Sign up</button>
+        <span id="user-name" class="hidden"></span>
+        <button id="btn-logout" class="button ghost small hidden" type="button">Log out</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-layer layer-sky" aria-hidden="true">
+          <img src="/user/assets/himalayan-hero.png" alt="">
+        </div>
+        <div class="hero-layer layer-mountains-far" aria-hidden="true">
+          <img src="/user/assets/himalayan-hero.png" alt="">
+        </div>
+        <div class="hero-layer layer-mountains-mid" aria-hidden="true">
+          <img src="/user/assets/himalayan-hero.png" alt="">
+        </div>
+        <div class="hero-layer layer-mountains-near" aria-hidden="true">
+          <img src="/user/assets/himalayan-hero.png" alt="">
+        </div>
+        <div class="hero-vignette" aria-hidden="true"></div>
+        <div class="hero-bottom-fade" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="hero-tag">Adventure Awaits</p>
+          <h1 class="hero-title"><span>Conquer</span><span class="accent">The Heights</span></h1>
+          <p class="hero-subtitle">Where Every Step Tells a Story</p>
+          <div class="hero-actions">
+            <a class="button primary hero-cta" href="#tours">Explore Treks</a>
+            <a class="button ghost" href="#inquiry">Send Inquiry</a>
+          </div>
+        </div>
+        <div class="scroll-cue" aria-hidden="true">
+          <span>Scroll</span>
+          <div class="scroll-cue-line"></div>
+        </div>
+      </section>
+
+      <section id="deals" class="band deal-band">
+        <div class="section-heading">
+          <p class="eyebrow">Live offer</p>
+          <h2>Current deal</h2>
+        </div>
+        <div id="dealList" class="deal-list" aria-live="polite"></div>
+      </section>
+
+      <section id="tours" class="band treks-section">
+        <div class="section-heading section-header">
+          <p class="eyebrow section-eyebrow">Featured Expeditions</p>
+          <h2 class="section-title">Choose Your Adventure</h2>
+          <p class="section-desc">Handpicked Himalayan treks and yatra escapes guided by experts who live and breathe the mountains.</p>
+        </div>
+        <div class="filters" aria-label="Tour filters">
+          <label>
+            Region
+            <select id="regionFilter">
+              <option value="">All regions</option>
+            </select>
+          </label>
+          <label>
+            Difficulty
+            <select id="difficultyFilter">
+              <option value="">Any difficulty</option>
+              <option value="easy">Easy</option>
+              <option value="moderate">Moderate</option>
+              <option value="challenging">Challenging</option>
+              <option value="strenuous">Strenuous</option>
+              <option value="extreme">Extreme</option>
+            </select>
+          </label>
+          <label>
+            Sort
+            <select id="sortFilter">
+              <option value="relevance">Featured</option>
+              <option value="price_asc">Price low to high</option>
+              <option value="price_desc">Price high to low</option>
+              <option value="duration">Shortest duration</option>
+              <option value="rating">Highest rated</option>
+            </select>
+          </label>
+        </div>
+        <div id="tourGrid" class="tour-grid" aria-live="polite"></div>
+      </section>
+
+      <section id="inquiry" class="band inquiry-band">
+        <div class="section-heading">
+          <p class="eyebrow">Plan your trip</p>
+          <h2>Send an inquiry</h2>
+        </div>
+        <form id="inquiryForm" class="inquiry-form">
+          <label>
+            Tour
+            <select id="tourSelect" name="tour_slug" required></select>
+          </label>
+          <label>
+            Departure
+            <select id="departureSelect" name="departure_id"></select>
+          </label>
+          <label>
+            Name
+            <input name="name" autocomplete="name" required minlength="2" placeholder="Your full name">
+          </label>
+          <label>
+            Email
+            <input name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+          </label>
+          <label>
+            Phone
+            <input name="phone_e164" autocomplete="tel" required placeholder="+919812345678">
+          </label>
+          <label>
+            Travellers
+            <input name="travellers" type="number" min="1" max="40" required placeholder="2">
+          </label>
+          <label>
+            Pickup city
+            <input name="pickup_city" autocomplete="address-level2" placeholder="e.g. Haridwar">
+          </label>
+          <label class="wide">
+            Message
+            <textarea name="message" rows="4" placeholder="Any special requests or questions..."></textarea>
+          </label>
+          <input class="honeypot" name="website" tabindex="-1" autocomplete="off">
+          <div class="h-captcha wide" data-sitekey="10000000-ffff-ffff-ffff-000000000001"></div>
+          <label class="consent wide">
+            <input name="consent" type="checkbox" checked required>
+            <span>I agree to be contacted about this trip.</span>
+          </label>
+          <button class="button primary wide" type="submit">Send inquiry</button>
+          <p id="formStatus" class="form-status" role="status"></p>
+        </form>
+      </section>
+
+      <section class="stats-section" id="stats">
+        <div class="section-header reveal">
+          <div class="section-eyebrow">By The Numbers</div>
+          <h2 class="section-title">Our Trekking Legacy</h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item reveal" data-target="150"><div class="stat-number" data-value="150">0</div><div class="stat-divider"></div><div class="stat-label">Routes Covered</div></div>
+          <div class="stat-item reveal reveal-delay-1" data-target="2500"><div class="stat-number" data-value="2500">0</div><div class="stat-divider"></div><div class="stat-label">Happy Travellers</div></div>
+          <div class="stat-item reveal reveal-delay-2" data-target="45"><div class="stat-number" data-value="45">0</div><div class="stat-divider"></div><div class="stat-label">Mountain Teams</div></div>
+          <div class="stat-item reveal reveal-delay-3" data-target="98"><div class="stat-number" data-value="98">0</div><div class="stat-divider"></div><div class="stat-label">Satisfaction Rate</div></div>
+        </div>
+      </section>
+
+      <section class="features-section" id="features">
+        <div class="section-header reveal">
+          <div class="section-eyebrow">The Trek On India Experience</div>
+          <h2 class="section-title">Why Trek With Us</h2>
+          <p class="section-desc">We obsess over every detail so you can focus on what matters — the trail ahead.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card reveal"><div class="feature-icon">🧭</div><h3>Expert Local Guides</h3><p>Certified mountain teams with deep local knowledge across routes, weather windows, and safe pacing.</p></div>
+          <div class="feature-card reveal reveal-delay-1"><div class="feature-icon">🎒</div><h3>Transparent Planning</h3><p>Clear departures, pricing, inclusions, and operations follow-up from inquiry to return drop.</p></div>
+          <div class="feature-card reveal reveal-delay-2"><div class="feature-icon">🌱</div><h3>Responsible Travel</h3><p>Trail-first itineraries built around safety, local communities, and low-impact mountain practices.</p></div>
+          <div class="feature-card reveal reveal-delay-3"><div class="feature-icon">🏥</div><h3>Safety Support</h3><p>Operations teams track every trip with practical support for high-altitude and yatra conditions.</p></div>
+        </div>
+      </section>
+
+      <section class="gallery-section" id="gallery">
+        <div class="gallery-bg" id="galleryParallax">
+          <img src="/user/assets/himalayan-hero.png" alt="Dramatic mountain landscape">
+        </div>
+        <div class="gallery-overlay">
+          <div class="gallery-content reveal">
+            <div class="section-eyebrow">Visual Journal</div>
+            <h2>Capture the Untamed</h2>
+            <p>Moments from Himalayan routes, fixed departures, and guided mountain escapes.</p>
+            <a href="#tours" class="gallery-btn">View Tours</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="testimonials-section" id="testimonials">
+        <div class="section-header reveal">
+          <div class="section-eyebrow">Traveller Stories</div>
+          <h2 class="section-title">What They Say</h2>
+        </div>
+        <div class="testimonials-slider">
+          <div class="testimonial-track" id="testimonialTrack">
+            <div class="testimonial-card active"><div class="testimonial-avatar"><img src="/user/assets/avatar.svg" alt="Traveller"></div><p class="testimonial-quote">“The route planning and on-ground coordination made our Himalayan trip feel safe, smooth, and memorable.”</p><div class="testimonial-author">Priya Sharma</div><div class="testimonial-role">Traveller · Delhi</div></div>
+            <div class="testimonial-card"><div class="testimonial-avatar"><img src="/user/assets/avatar.svg" alt="Traveller"></div><p class="testimonial-quote">“Every pickup, hotel, and trek update was handled clearly. We could just enjoy the mountains.”</p><div class="testimonial-author">Amit Verma</div><div class="testimonial-role">Explorer · Mumbai</div></div>
+            <div class="testimonial-card"><div class="testimonial-avatar"><img src="/user/assets/avatar.svg" alt="Traveller"></div><p class="testimonial-quote">“The team knew the trail, the weather, and exactly when to slow down. It felt personal.”</p><div class="testimonial-author">Neha Rawat</div><div class="testimonial-role">Trekker · Dehradun</div></div>
+          </div>
+          <div class="testimonial-dots">
+            <button class="testimonial-dot active" type="button" data-testimonial="0" aria-label="Show testimonial 1"></button>
+            <button class="testimonial-dot" type="button" data-testimonial="1" aria-label="Show testimonial 2"></button>
+            <button class="testimonial-dot" type="button" data-testimonial="2" aria-label="Show testimonial 3"></button>
+          </div>
+        </div>
+      </section>
+
+      <section id="my-inquiries" class="band hidden">
+        <div class="section-heading">
+          <p class="eyebrow">Your bookings</p>
+          <h2>My Inquiries</h2>
+        </div>
+        <div id="inquiryList" class="inquiry-list" aria-live="polite"></div>
+      </section>
+
+      <section class="cta-section" id="contact">
+        <div class="cta-content reveal">
+          <h2>Ready to Write Your<br>Own Mountain Story?</h2>
+          <p>Send an inquiry and our team will help match you to the right departure.</p>
+          <a href="#inquiry" class="cta-btn">Book Your Trek</a>
+        </div>
+      </section>
+
+      <footer>
+        <div class="logo"><img class="footer-logo" src="/uploads/logos/oktrek-logo.svg" alt="OKTREK logo"><span data-brand-name>Trek On India</span></div>
+        <p>Conquer The Heights · Himalayan Journeys</p>
+      </footer>
+    </main>
+
+    <dialog id="authDialog" class="auth-dialog">
+      <button class="icon-close" type="button" aria-label="Close auth dialog">x</button>
+      <div id="authContent" class="auth-content">
+        <div class="auth-tabs">
+          <button class="auth-tab active" type="button" data-tab="login">Log in</button>
+          <button class="auth-tab" type="button" data-tab="register">Register</button>
+        </div>
+        <form id="loginForm" class="auth-form">
+          <label>Email <input type="email" name="email" required autocomplete="email" placeholder="you@example.com"></label>
+          <label>Password <input type="password" name="password" required autocomplete="current-password" placeholder="Your password"></label>
+          <button class="button primary" type="submit">Log in</button>
+          <p class="form-status error" role="alert"></p>
+        </form>
+        <form id="registerForm" class="auth-form hidden">
+          <label>Name <input type="text" name="name" required autocomplete="name" minlength="2" placeholder="Your full name"></label>
+          <label>Email <input type="email" name="email" required autocomplete="email" placeholder="you@example.com"></label>
+          <label>Password <input type="password" name="password" required autocomplete="new-password" minlength="10" placeholder="At least 10 characters"></label>
+          <button class="button primary" type="submit">Create account</button>
+          <p class="form-status error" role="alert"></p>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog id="tourDialog" class="tour-dialog">
+      <button class="icon-close" type="button" aria-label="Close tour detail">x</button>
+      <div id="tourDetail"></div>
+    </dialog>
+
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    <script src="/user/user.js"></script>
+  </body>
+</html>

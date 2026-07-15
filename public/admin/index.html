@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Trek On India — Admin</title>
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<div id="app" class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="scene" aria-hidden="true">
+      <div class="scene-tilt">
+        <svg class="scene-svg" viewBox="0 0 300 700" preserveAspectRatio="xMidYMax slice">
+          <defs><linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#050B14"/><stop offset="45%" stop-color="#0A1B2E"/><stop offset="78%" stop-color="#163A5C"/><stop offset="100%" stop-color="#1B4166"/></linearGradient></defs>
+          <rect width="300" height="700" fill="url(#sky1)"/>
+          <g class="layer-sun"><circle cx="215" cy="230" r="46" fill="#E8B04B" opacity=".6"/></g>
+          <g class="layer-back"><path d="M0,700 L0,470 L60,410 L110,455 L160,385 L220,440 L300,400 L300,700 Z" fill="#1E4A6F" opacity=".55"/></g>
+          <g class="layer-mid"><path d="M0,700 L0,520 L50,470 L100,510 L150,450 L210,505 L260,465 L300,500 L300,700 Z" fill="#123049" opacity=".8"/></g>
+          <g class="layer-front"><path d="M0,700 L0,565 L45,530 L95,560 L145,510 L200,555 L250,520 L300,555 L300,700 Z" fill="#0A2036"/></g>
+          <g class="layer-river"><path class="river-path" d="M40,700 C80,630 20,590 70,540 C120,490 180,500 190,440" stroke="#5FC8C4" stroke-width="3" fill="none" opacity=".55" stroke-linecap="round"/></g>
+        </svg>
+      </div>
+    </div>
+    <div class="sidebar-content">
+      <div class="sidebar-brand"><img class="brand-logo sidebar-logo" src="/uploads/logos/oktrek-logo.svg" alt="OKTREK logo"><span data-brand-name>Trek On India</span></div>
+      <nav class="sidebar-nav" aria-label="Admin navigation">
+        <a class="nav-item active" href="#" data-view="dashboard"><span class="nav-icon">▦</span> Dashboard</a>
+        <a class="nav-item" href="#" data-view="bookings"><span class="nav-icon">☑</span> Bookings</a>
+        <a class="nav-item" href="#" data-view="tours"><span class="nav-icon">△</span> Tours</a>
+        <a class="nav-item" href="#" data-view="gallery"><span class="nav-icon">▧</span> Gallery</a>
+        <a class="nav-item" href="#" data-view="users"><span class="nav-icon">◉</span> Users</a>
+        <a class="nav-item" href="#" data-view="communications"><span class="nav-icon">✉</span> Communications</a>
+        <a class="nav-item" href="#" data-view="reviews"><span class="nav-icon">★</span> Reviews</a>
+        <a class="nav-item" href="#" data-view="settings"><span class="nav-icon">⚙</span> Settings</a>
+        <a class="nav-item" href="#" data-view="profile"><span class="nav-icon">○</span> Profile</a>
+      </nav>
+      <div class="sidebar-footer"><span id="sidebarWho" class="sidebar-user"></span><button id="btn-logout" class="ghost small">Log out</button></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+      <div class="topbar-title" id="pageTitle">Dashboard</div>
+      <div class="topbar-actions"><span id="topbarWho" class="muted"></span></div>
+    </header>
+
+    <div class="content" id="content">
+      <section id="view-dashboard" class="view">
+        <div class="admin-grid three">
+          <div class="panel metric"><span class="metric-label">New leads</span><strong id="metric-new">—</strong></div>
+          <div class="panel metric"><span class="metric-label">Confirmed bookings</span><strong id="metric-confirmed">—</strong></div>
+          <div class="panel metric"><span class="metric-label">Recent notifications</span><strong id="metric-notifications">—</strong></div>
+        </div>
+        <section class="panel">
+          <div class="panel-head"><h2>Recent bookings</h2><button id="btn-dashboard-refresh" class="ghost">Refresh</button></div>
+          <table><thead><tr><th>Ref</th><th>Tour</th><th>Traveller</th><th>Status</th><th>Actions</th></tr></thead><tbody id="dashboard-booking-rows"></tbody></table>
+          <p id="dashboard-msg" class="muted"></p>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2>Notification log</h2><button id="btn-notifications" class="ghost">Refresh log</button></div>
+          <table><thead><tr><th>When</th><th>Channel</th><th>To</th><th>Template</th><th>Status</th></tr></thead><tbody id="notification-rows"></tbody></table>
+          <p id="notification-msg" class="muted"></p>
+        </section>
+      </section>
+
+      <section id="view-bookings" class="view hidden">
+        <div class="toolbar">
+          <label>Status<select id="filter-status"><option value="">All</option><option value="new">New</option><option value="contacted">Contacted</option><option value="quote_sent">Quote sent</option><option value="confirmed">Confirmed</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option><option value="lost">Lost</option></select></label>
+          <label class="check toolbar-check"><input type="checkbox" id="filter-booked"> Confirmed/completed only</label>
+          <button id="btn-refresh" class="ghost">Refresh</button>
+        </div>
+        <table id="tbl"><thead><tr><th>Ref</th><th>Tour / Departure</th><th>Traveller</th><th>Pax</th><th>Status</th><th>Assigned</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table>
+        <div id="dash-pager" class="toolbar" style="margin-top:14px"></div>
+        <p id="dash-msg" class="muted"></p>
+      </section>
+
+      <section id="view-tours" class="view hidden">
+        <div class="admin-grid two">
+          <section class="panel">
+            <div class="panel-head"><h2>Tours</h2><button id="btn-new-tour" class="ghost">New tour</button></div>
+            <table><thead><tr><th>Title</th><th>Price</th><th>Published</th><th>Actions</th></tr></thead><tbody id="tour-rows"></tbody></table>
+            <p id="tours-msg" class="muted"></p>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h2 id="tour-form-title">Create / edit tour</h2><button id="btn-clear-tour" class="ghost">Clear</button></div>
+            <form id="form-tour" class="settings-grid wide-form">
+              <input type="hidden" id="tour-id">
+              <label>Slug<input id="tour-slug" required></label>
+              <label>Title<input id="tour-title" required></label>
+              <label>Region<input id="tour-region" required></label>
+              <label>Difficulty<select id="tour-difficulty"><option value="">None</option><option>easy</option><option>moderate</option><option>challenging</option><option>strenuous</option><option>extreme</option></select></label>
+              <label>Duration days<input id="tour-duration" type="number" min="1" required></label>
+              <label>From price INR<input id="tour-price" type="number" min="0" required></label>
+              <label>Min age<input id="tour-age" type="number" min="0"></label>
+              <label>Hero image URL<input id="tour-hero" placeholder="/uploads/tours/..."></label>
+              <label class="wide">Upload hero<input type="file" id="tour-hero-file" accept="image/png,image/jpeg,image/jpg,image/webp"></label>
+              <label class="wide">Description<textarea id="tour-description" rows="4"></textarea></label>
+              <label class="wide">Itinerary JSON<textarea id="tour-itinerary" rows="5" placeholder='[{"day":1,"title":"Day 1","detail":"..."}]'></textarea></label>
+              <label class="wide">Inclusions, one per line<textarea id="tour-inclusions" rows="3"></textarea></label>
+              <label class="wide">Exclusions, one per line<textarea id="tour-exclusions" rows="3"></textarea></label>
+              <label>Meta title<input id="tour-meta-title"></label>
+              <label>Meta description<input id="tour-meta-description"></label>
+              <label class="check"><input type="checkbox" id="tour-published"> Published</label>
+              <label class="check"><input type="checkbox" id="tour-featured"> Featured</label>
+              <button type="submit" class="primary">Save tour</button>
+              <button type="button" id="btn-delete-tour" class="danger-button">Delete tour</button>
+              <p id="tour-form-msg" class="muted small"></p>
+            </form>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-gallery" class="view hidden">
+        <section class="panel">
+          <div class="panel-head"><h2>Tour gallery</h2><button id="btn-gallery-refresh" class="ghost">Refresh</button></div>
+          <div class="toolbar"><label>Tour<select id="gallery-tour"></select></label></div>
+          <form id="form-gallery" class="settings-grid">
+            <label class="wide">Upload image<input type="file" id="gallery-file" accept="image/png,image/jpeg,image/jpg,image/webp"></label>
+            <label class="wide">Image URL<input id="gallery-path" required placeholder="/uploads/tours/..."></label>
+            <label>Alt text<input id="gallery-alt"></label>
+            <label>Sort order<input id="gallery-sort" type="number" min="0" value="0"></label>
+            <button type="submit" class="primary">Add image</button>
+            <p id="gallery-msg" class="muted small"></p>
+          </form>
+          <div id="gallery-list" class="gallery-admin-list"></div>
+        </section>
+      </section>
+
+      <section id="view-users" class="view hidden">
+        <div class="admin-grid two">
+          <section class="panel">
+            <div class="panel-head"><h2>Users</h2><button id="btn-refresh-users" class="ghost">Refresh</button></div>
+            <div class="toolbar"><label>Type<select id="filter-users-role"><option value="staff">Staff</option><option value="traveller">Travellers</option><option value="all">All</option></select></label></div>
+            <table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Actions</th></tr></thead><tbody id="user-rows"></tbody></table>
+            <p id="users-msg" class="muted"></p>
+          </section>
+          <section class="panel">
+            <h2>Create staff user</h2>
+            <form id="form-user" class="settings-grid">
+              <label>Name<input id="new-user-name" required></label>
+              <label>Email<input id="new-user-email" type="email" required></label>
+              <label>Role<select id="new-user-role"><option value="ops">ops</option><option value="content">content</option><option value="analyst">analyst</option><option value="superadmin">superadmin</option></select></label>
+              <label>Password<input id="new-user-password" type="password" minlength="10" required></label>
+              <button type="submit" class="primary">Create user</button>
+              <p id="user-form-msg" class="muted small"></p>
+            </form>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-communications" class="view hidden">
+        <div class="admin-grid two">
+          <section class="panel">
+            <h2>Send message / reminder</h2>
+            <form id="form-communication" class="settings-grid">
+              <label>Channel<select id="comm-channel"><option value="email">Email</option><option value="whatsapp">WhatsApp</option><option value="sms">SMS</option><option value="notification">Notification log</option></select></label>
+              <label>Inquiry ID<input id="comm-inquiry-id" type="number" min="1" placeholder="Optional"></label>
+              <label>User ID<input id="comm-user-id" type="number" min="1" placeholder="Optional"></label>
+              <label>Recipient override<input id="comm-recipient" placeholder="email or +919..."></label>
+              <label class="wide">Subject<input id="comm-subject" placeholder="For email"></label>
+              <label>Reminder label<input id="comm-reminder" placeholder="payment, departure, document"></label>
+              <label class="wide">Message<textarea id="comm-body" rows="6" required></textarea></label>
+              <button type="submit" class="primary">Send</button>
+              <p id="comm-msg" class="muted small"></p>
+            </form>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h2>Booking contacts</h2><button id="btn-contacts-refresh" class="ghost">Refresh</button></div>
+            <table><thead><tr><th>Ref</th><th>Traveller</th><th>Tour</th><th>Status</th><th></th></tr></thead><tbody id="contact-rows"></tbody></table>
+            <p id="contacts-msg" class="muted"></p>
+          </section>
+        </div>
+      </section>
+
+      <section id="view-reviews" class="view hidden">
+        <div class="toolbar"><label>Status<select id="filter-review-status"><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select></label><button id="btn-refresh-reviews" class="ghost">Refresh</button></div>
+        <div id="review-list" class="review-list"></div>
+        <p id="reviews-msg" class="muted"></p>
+      </section>
+
+      <section id="view-settings" class="view hidden">
+        <div class="tabs"><button class="tab active" data-tab="branding">Branding</button><button class="tab" data-tab="smtp">SMTP Mail</button><button class="tab" data-tab="whatsapp">WhatsApp</button><button class="tab" data-tab="sms">SMS</button></div>
+        <div class="tab-panel active" data-panel="branding">
+          <form id="form-branding" class="settings-grid"><label>Brand name<input id="sb-brand-name" maxlength="120"></label><label class="wide">Logo<input type="file" id="sb-logo-file" accept="image/png,image/jpeg,image/jpg,image/webp"><small class="muted">PNG, JPG, or WEBP — max 2MB.</small></label><label>Logo URL<input id="sb-logo-url"></label><div class="preview-box"><img id="logo-preview" class="logo-preview hidden" alt="Logo preview"></div><button type="submit" class="primary">Save branding</button><p id="branding-msg" class="muted small"></p></form>
+        </div>
+        <div class="tab-panel hidden" data-panel="smtp">
+          <form id="form-smtp" class="settings-grid"><label>SMTP Host<input id="sb-smtp-host"></label><label>SMTP Port<input id="sb-smtp-port" type="number"></label><label>SMTP User<input id="sb-smtp-user"></label><label>SMTP Password<input id="sb-smtp-pass" type="password" placeholder="Leave as-is to keep current"></label><label>From address<input id="sb-smtp-from"></label><label>Ops address<input id="sb-smtp-ops"></label><label class="check"><input type="checkbox" id="sb-smtp-secure"> Use TLS</label><button type="submit" class="primary">Save SMTP</button><p id="smtp-msg" class="muted small"></p></form>
+        </div>
+        <div class="tab-panel hidden" data-panel="whatsapp">
+          <form id="form-whatsapp" class="settings-grid"><label>WhatsApp ops number<input id="sb-wa-ops"></label><label>WhatsApp phone number ID<input id="sb-wa-phone-id"></label><label>WhatsApp access token<input id="sb-wa-token" type="password" placeholder="Paste token or leave as-is"></label><label class="check"><input type="checkbox" id="sb-wa-enabled"> Enable WhatsApp notifications</label><label class="check"><input type="checkbox" id="sb-wa-customer"> Notify travellers on WhatsApp</label><button type="submit" class="primary">Save WhatsApp</button><p id="whatsapp-msg" class="muted small"></p></form>
+        </div>
+        <div class="tab-panel hidden" data-panel="sms">
+          <form id="form-sms" class="settings-grid"><label class="check"><input type="checkbox" id="sb-sms-enabled"> Enable SMS</label><label>Provider name<input id="sb-sms-provider" placeholder="dev, twilio, msg91"></label><label class="wide">Provider API URL<input id="sb-sms-api-url"></label><label>API key<input id="sb-sms-api-key" type="password" placeholder="Paste key or leave as-is"></label><label>Sender ID<input id="sb-sms-sender" maxlength="40"></label><button type="submit" class="primary">Save SMS</button><p id="sms-msg" class="muted small"></p></form>
+        </div>
+      </section>
+
+      <section id="view-profile" class="view hidden">
+        <div class="panel" style="max-width:560px"><h2>Your Profile</h2><div id="profile-card" class="profile-card"><p><strong>Name:</strong> <span id="pf-name"></span></p><p><strong>Email:</strong> <span id="pf-email"></span></p><p><strong>Role:</strong> <span id="pf-role"></span></p><p><strong>MFA:</strong> <span id="pf-mfa"></span></p></div><h3>Update Profile</h3><form id="form-profile" class="settings-grid"><label>Name<input id="pf-edit-name" required minlength="2" maxlength="120"></label><label>Phone<input id="pf-edit-phone" placeholder="+919812345678"></label><button type="submit" class="primary">Update profile</button><p id="profile-msg" class="muted small"></p></form><h3>Change Password</h3><form id="form-password" class="settings-grid"><label>Current password<input type="password" id="pf-cur-pw" required></label><label>New password<input type="password" id="pf-new-pw" required minlength="10" maxlength="200"></label><button type="submit" class="primary">Change password</button><p id="password-msg" class="muted small"></p></form></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div id="auth-overlay" class="auth-overlay">
+  <div class="scene scene-wide" aria-hidden="true"><div class="scene-tilt"><svg class="scene-svg" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMax slice"><defs><linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#050B14"/><stop offset="45%" stop-color="#0A1B2E"/><stop offset="78%" stop-color="#163A5C"/><stop offset="100%" stop-color="#1B4166"/></linearGradient></defs><rect width="1400" height="700" fill="url(#sky2)"/><g class="layer-sun"><circle cx="990" cy="230" r="70" fill="#E8B04B" opacity=".6"/></g><g class="layer-back"><path d="M0,700 L0,460 L160,380 L320,450 L480,360 L650,440 L820,370 L1000,450 L1180,390 L1400,440 L1400,700 Z" fill="#1E4A6F" opacity=".55"/></g><g class="layer-mid"><path d="M0,700 L0,520 L180,455 L360,510 L540,430 L720,500 L900,440 L1080,505 L1260,450 L1400,490 L1400,700 Z" fill="#123049" opacity=".8"/></g><g class="layer-front"><path d="M0,700 L0,575 L200,520 L400,565 L600,500 L800,560 L1000,510 L1200,555 L1400,525 L1400,700 Z" fill="#0A2036"/></g></svg></div></div>
+  <section id="view-login" class="card center"><div class="brand"><img class="brand-logo auth-logo" src="/uploads/logos/oktrek-logo.svg" alt="OKTREK logo"> <span data-brand-name>Trek On India</span> <span class="muted">Admin</span></div><form id="form-login" autocomplete="off"><label>Email<input type="email" id="login-email" required autocomplete="username"></label><label>Password<input type="password" id="login-password" required autocomplete="current-password"></label><button type="submit">Sign in</button><p id="login-error" class="error" role="alert"></p></form></section>
+  <section id="view-mfa" class="card center hidden"><div class="brand"><img class="brand-logo auth-logo small-auth-logo" src="/uploads/logos/oktrek-logo.svg" alt="OKTREK logo"> Two-factor check</div><form id="form-mfa"><label>6-digit code<input inputmode="numeric" pattern="[0-9]*" maxlength="6" id="mfa-code" required autofocus value="000000"></label><p class="muted small">Local preview code: <span class="mono">000000</span></p><button type="submit">Verify</button><p id="mfa-error" class="error" role="alert"></p></form></section>
+  <section id="view-enrol" class="card center hidden"><div class="brand"><img class="brand-logo auth-logo small-auth-logo" src="/uploads/logos/oktrek-logo.svg" alt="OKTREK logo"> Set up two-factor</div><p>MFA is mandatory for staff. Add this secret to Google Authenticator or Authy, then confirm with a code.</p><p class="mono" id="enrol-secret"></p><p class="muted small" id="enrol-uri"></p><form id="form-enrol"><label>First code<input inputmode="numeric" maxlength="6" id="enrol-code" required></label><button type="submit">Enable MFA</button><p id="enrol-error" class="error" role="alert"></p></form></section>
+</div>
+
+<div id="messenger" class="messenger hidden" aria-hidden="true">
+  <div class="messenger-backdrop" id="messenger-backdrop"></div>
+  <aside class="messenger-panel" role="dialog" aria-modal="true" aria-labelledby="messenger-title">
+    <div class="messenger-header"><svg class="ridgeline" viewBox="0 0 400 84" preserveAspectRatio="none" aria-hidden="true"><path class="ridge ridge-back" d="M0,84 L0,48 L55,22 L105,44 L165,12 L225,40 L285,18 L345,46 L400,28 L400,84 Z"></path><path class="ridge ridge-front" d="M0,84 L0,62 L50,36 L100,56 L150,30 L210,52 L260,32 L320,54 L370,34 L400,46 L400,84 Z"></path></svg><button type="button" class="messenger-close" id="messenger-close" aria-label="Close conversation">✕</button><div class="messenger-heading"><span class="messenger-ref" id="messenger-ref"></span><h2 id="messenger-title"></h2><p class="messenger-sub" id="messenger-sub"></p></div></div>
+    <div class="messenger-body" id="messenger-thread"></div>
+    <form class="messenger-composer" id="messenger-form"><div class="composer-toggle" role="radiogroup" aria-label="Message audience"><button type="button" class="toggle-pill active" data-visibility="internal" id="toggle-internal">Basecamp note</button><button type="button" class="toggle-pill" data-visibility="customer" id="toggle-customer">Send to traveller</button></div><textarea id="messenger-input" rows="2" placeholder="Write a note for the team…" required maxlength="8000"></textarea><div class="composer-row"><p class="composer-hint" id="composer-hint">Only your team can see basecamp notes.</p><button type="submit" id="messenger-send">Save note</button></div><p id="messenger-error" class="error" role="alert"></p></form>
+  </aside>
+</div>
+
+<script src="/admin/admin.js" defer></script>
+</body>
+</html>

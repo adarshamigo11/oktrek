@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Databases (SQLite dev)
+*.sqlite
+*.sqlite3
+*.db
+data/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Runtime uploads (user content)
+public/uploads/deals/*
+public/uploads/tours/*
+uploads/deals/*
+uploads/tours/*
+!**/.gitkeep
+
+# Build artifacts / archives
+OKTREK.zip
+*.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

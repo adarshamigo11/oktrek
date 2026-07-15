@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">OKTREK logo</title>
+  <desc id="desc">Mountain, sun, forest trail and OKTREK wordmark logo.</desc>
+  <rect width="1024" height="1024" fill="#fbf8ef"/>
+  <g fill="none" stroke="#164332" stroke-width="26" stroke-linecap="round">
+    <path d="M260 420a270 270 0 0 1 210-245"/>
+    <path d="M554 175a270 270 0 0 1 210 245"/>
+    <path d="M260 420l-65-26 65-26" fill="#164332" stroke="none"/>
+    <path d="M764 420l65-26-65-26" fill="#164332" stroke="none"/>
+  </g>
+  <g fill="#f47a16">
+    <circle cx="512" cy="338" r="82"/>
+    <path d="M512 76l26 86h-52z"/>
+    <path d="M512 190l10 72h-20z"/>
+    <path d="M392 226l52 64-19 12z"/>
+    <path d="M632 226l-52 64 19 12z"/>
+    <path d="M318 296l82 32-13 20z"/>
+    <path d="M706 296l-82 32 13 20z"/>
+    <path d="M282 380l92-4-5 23z"/>
+    <path d="M742 380l-92-4 5 23z"/>
+  </g>
+  <path d="M222 510l115-124 38 42 137-180 137 180 38-42 115 124-110-64-42 44-68-38 56 104-126-70-136 70 56-104-68 38-42-44z" fill="#25313b"/>
+  <path d="M512 248l-46 140-63 48 25-80-87 96-25-30-94 96 107-66 39 43 94-77-26 92 76-48 76 48-26-92 94 77 39-43 107 66-94-96-25 30-87-96 25 80-63-48z" fill="#fff"/>
+  <g fill="#164332">
+    <path d="M270 595l22-60 22 60h-16l24 52h-20l25 57h-70l25-57h-20l24-52z"/>
+    <path d="M330 620l20-54 20 54h-15l23 48h-18l23 52h-66l23-52h-18l23-48z"/>
+    <path d="M694 620l20-54 20 54h-15l23 48h-18l23 52h-66l23-52h-18l23-48z"/>
+    <path d="M754 595l22-60 22 60h-16l24 52h-20l25 57h-70l25-57h-20l24-52z"/>
+    <path d="M220 705c108-86 225-108 350-65-48 18-88 39-120 63 50 8 89 27 119 58-100 18-193 12-279-18-35-12-58-25-70-38z"/>
+    <path d="M804 705c-108-86-225-108-350-65 48 18 88 39 120 63-50 8-89 27-119 58 100 18 193 12 279-18 35-12 58-25 70-38z"/>
+  </g>
+  <path d="M522 650c-86 32-146 70-180 112 65 10 112 35 140 76-9 44-4 81 16 110-80-47-122-94-126-141 20-37 62-75 126-114 27-16 35-30 24-43z" fill="#fbf8ef"/>
+  <path d="M540 644c33 30 22 61-34 92-56 31-88 59-96 84" fill="none" stroke="#fbf8ef" stroke-width="42" stroke-linecap="round"/>
+  <g fill="#25313b" font-family="Arial Black, Impact, sans-serif" font-size="138" font-weight="900" letter-spacing="-3">
+    <text x="92" y="900">OK</text>
+    <text x="366" y="900">TREK</text>
+  </g>
+  <g fill="#164332" font-family="Arial Black, Impact, sans-serif" font-size="138" font-weight="900" letter-spacing="-3">
+    <text x="92" y="900">OK</text>
+  </g>
+</svg>
