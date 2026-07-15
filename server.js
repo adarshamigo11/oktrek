@@ -1,7 +1,7 @@
 import { buildApp } from "./src/app.js";
 import { config } from "./src/config/index.js";
 import { logger } from "./src/lib/logger.js";
-import { db } from "./src/lib/db.js";
+import { closeDb } from "./src/lib/db.js";
 
 const app = buildApp();
 const server = app.listen(config.port, "127.0.0.1", () => {
@@ -22,7 +22,7 @@ async function shutdown(signal) {
   logger.info({ signal }, "shutting down");
   clearInterval(previewKeepAlive);
   server.close(async () => {
-    await db.destroy();
+    await closeDb();
     process.exit(0);
   });
   setTimeout(() => process.exit(1), 10_000).unref();

@@ -11,7 +11,7 @@ export const config = {
   isProd: process.env.NODE_ENV === "production",
   port: Number(process.env.PORT || 4000),
   appUrl: process.env.APP_URL || "http://localhost:4000",
-  databaseUrl: req("DATABASE_URL"),
+  mongoUrl: process.env.MONGODB_URL || "mongodb://127.0.0.1:27017/oktrek",
 
   sessionSecret: req("SESSION_SECRET"),
   csrfSecret: req("CSRF_SECRET"),

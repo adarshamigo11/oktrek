@@ -1,10 +1,11 @@
-import { db } from "../lib/db.js";
+import { getDb } from "../lib/db.js";
 import { hashIp } from "../lib/crypto.js";
 import { logger } from "../lib/logger.js";
 
-/** Append-only audit write — Security doc §3 repudiation control. */
+/** Append-only audit write. */
 export async function audit(req, { action, entityType, entityId = null, before = null, after = null }) {
-  await db("audit_entry").insert({
+  const db = await getDb();
+  await db.collection("audit_entries").insertOne({
     actor_id: req.user?.id ?? null,
     action,
     entity_type: entityType,
@@ -13,6 +14,7 @@ export async function audit(req, { action, entityType, entityId = null, before =
     after_json: after ? JSON.stringify(after) : null,
     ip_hash: hashIp(req.ip),
     ua: (req.get("user-agent") || "").slice(0, 255),
+    created_at: new Date(),
   });
 }
 
