@@ -65,10 +65,11 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  min-height: 76px;
+  height: 76px;
   padding: 22px clamp(20px, 5vw, 60px);
   background: linear-gradient(180deg, rgba(6, 31, 22, 0.74), rgba(6, 31, 22, 0));
   transition: padding 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+  overflow: visible;
 }
 
 .site-header.scrolled {
@@ -111,11 +112,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 .brand-logo {
-  width: 56px;
-  height: 56px;
+  width: 72px;
+  height: 72px;
   object-fit: contain;
   background: transparent;
   border: none;
+  margin-top: -10px;
 }
 
 .nav {
@@ -634,11 +636,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 .brand-logo {
-  width: 50px;
-  height: 50px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
   background: transparent;
   border: none;
+  margin-top: -8px;
 }
 
 .hidden { display: none !important; }
@@ -1157,9 +1160,9 @@ body {
 
 .brand-mark,
 .brand-logo {
-  flex: 0 0 56px;
-  width: 56px;
-  height: 56px;
+  flex: 0 0 72px;
+  width: 72px;
+  height: 72px;
 }
 
 .brand-mark {
@@ -1298,7 +1301,7 @@ body {
   .site-header { gap: 10px; }
   .brand { font-size: 20px; letter-spacing: 1.4px; }
   .brand-mark,
-  .brand-logo { flex-basis: 36px; width: 36px; height: 36px; }
+  .brand-logo { flex-basis: 48px; width: 48px; height: 48px; }
   .auth-header { gap: 6px; }
   .button.small,
   .auth-header .button { min-height: 34px; padding: 8px 12px; font-size: 0.66rem; }
