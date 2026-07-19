@@ -111,8 +111,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 .brand-logo {
-  width: 42px;
-  height: 42px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
   background: transparent;
   border: none;
@@ -372,16 +372,16 @@ select, input, textarea {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
   padding: 11px 14px;
-  background: rgba(6, 31, 22, 0.85);
+  background: #061f16;
   color: var(--cream);
   font: inherit;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-select option { color: var(--cream); background: #0a2a1c; }
+select option { color: var(--cream); background: #061f16; }
 input::placeholder, textarea::placeholder { color: rgba(242, 239, 233, 0.55); }
-select:focus, input:focus, textarea:focus { border-color: rgba(232, 168, 124, 0.58); box-shadow: 0 0 0 4px rgba(201, 123, 74, 0.14); background: rgba(6, 31, 22, 0.95); }
+select:focus, input:focus, textarea:focus { border-color: rgba(232, 168, 124, 0.58); box-shadow: 0 0 0 4px rgba(201, 123, 74, 0.14); background: #081a12; }
 
 .deal-list { display: grid; gap: 18px; }
 .deal, .inquiry-card, .mini-panel {
@@ -634,8 +634,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 .brand-logo {
-  width: 38px;
-  height: 38px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
   background: transparent;
   border: none;
@@ -1157,9 +1157,9 @@ body {
 
 .brand-mark,
 .brand-logo {
-  flex: 0 0 46px;
-  width: 46px;
-  height: 46px;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
 }
 
 .brand-mark {
