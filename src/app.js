@@ -44,6 +44,10 @@ export function buildApp() {
     setHeaders(res) { res.setHeader("Cache-Control", "public, max-age=86400"); },
   }));
 
+  app.use("/images", express.static(path.join(__dirname, "..", "public", "images"), {
+    setHeaders(res) { res.setHeader("Cache-Control", "public, max-age=86400"); },
+  }));
+
   app.get("/", (_req, res) => res.redirect("/user/"));
 
   app.use(notFound);

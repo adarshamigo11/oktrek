@@ -373,16 +373,16 @@ select, input, textarea {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
   padding: 11px 14px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(6, 31, 22, 0.85);
   color: var(--cream);
   font: inherit;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-select option { color: #102017; background: #fffaf0; }
-input::placeholder, textarea::placeholder { color: rgba(242, 239, 233, 0.85); }
-select:focus, input:focus, textarea:focus { border-color: rgba(232, 168, 124, 0.58); box-shadow: 0 0 0 4px rgba(201, 123, 74, 0.14); background: rgba(255, 255, 255, 0.11); }
+select option { color: var(--cream); background: #0a2a1c; }
+input::placeholder, textarea::placeholder { color: rgba(242, 239, 233, 0.55); }
+select:focus, input:focus, textarea:focus { border-color: rgba(232, 168, 124, 0.58); box-shadow: 0 0 0 4px rgba(201, 123, 74, 0.14); background: rgba(6, 31, 22, 0.95); }
 
 .deal-list { display: grid; gap: 18px; }
 .deal, .inquiry-card, .mini-panel {
